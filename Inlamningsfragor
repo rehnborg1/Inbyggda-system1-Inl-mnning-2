@@ -1,0 +1,48 @@
+Dataarkitektur Del II
+
+1.      Förklara skillnaden mellan I-instruktioner (immediate) samt R-instruktioner (register). Förklara skillnaden mellan OR samt
+        ORI, både via assemblerkod samt på hårdvarunivå (gärna via pseudokod i C). Via detta, förklara varför det hårdvarumässigt
+        är nödvändigt att implementera separata I- och R-instruktioner för olika instruktioner.
+
+Svar:   R-instruktioner arbetar med register som direktadresseras, medan I-instruktioner använder en omedelbar konstant eller en adress för att utföra operationen.
+        OR är en register-instruktion som Utför bitvis OR-operation med innehållet i ett CPU-register. ORI gör en bitvis OR med en konstant.
+        
+        OR R16, R17 // R16 = R16 + R17 
+        ORI R16, (1 << LED1) // R16 = R16 + (1 << LED1)
+        
+2.      Förklara vad som händer vid ett villkorslöst programhopp via instruktionen JMP, exempelvis JMP 0x20.
+        Vad är det som medför att programmet ”hoppar” till adressen 0x20 i detta fall? Förklara med nyckelord såsom OP-kod,
+        operand samt programräknare. Visa vad som sker via pseudokod i C/C++.
+        
+Svar:   Instruktionen JMP 0x20 medför att processorn hämtar OP-koden (i detta fallet JMP) och läser sedan operanden (0x20) till programräknaren. 
+        Detta göra att programräknarnen nu pekar på adressen 0x20 och kommer hoppa dit som nästa exekvering.
+        
+        Pseudokod i C: Här tilldelar vi fallet JMP i en switch-sats och säger att programräknaren(pc) ska peka på operand 1(op1) om den stöder på JMP, 
+        sedan avbryts(break) fallet JMP.
+        
+        case JMP:
+         {
+            pc = op1; 
+            break;
+         }
+        
+        
+3.      Förklara vad cacheminne är, vad syfte med cacheminne är samt när det är fördelaktigt att använda. Ange också varför
+        kombinationen av en stor andel externt RAM-minne samt en mindre del cacheminne ofta föredras framför att enbart
+        använda en stor andel cacheminne.
+        
+Svar:   Cacheminnet är en liten del snabbt RAM-minne i CPU:n som lagrar vanligt förekommande instruktioner och data för att få exekveringen att flyta bättre. 
+        Syftet med cacheminnet är att öka på exekveringstiden genom att "samarbeta" med externa minnen och förutspå vad nästa instruktion kommer att vara
+        och lagra det för att, återigen få en effektivare programexekvering. Att lagra ofta förekommande instruktioner helt enkelt.
+        Cacheminne är fördelaktigt i tex. en PC som kräver mycket externt minne.
+        Det är fördelaktigt att ha en liten del cacheminne då instruktioner kan hämtas ur det på kort tid. Har vi en stor del cacheminne skulle det ta lång
+        tid att hämta instruktionerna och motarbeta själva syftet med att avända cacheminne.
+        
+4.      Förklara vad som menas med pipelining och hur det kan öka genomströmningen av exekverade instruktioner. 
+        Förklara också vad som sker vid pipelining när en hoppinstruktion genomförs och varför.
+        
+Svar:   Pipelining delar upp exekveringsprocessen i flera olika steg och kan därför bearbeta flera instruktioner samtidigt vilket gör exekveringen väldigt
+        effektiv. Exempel på uppdelning av exekvering är Fetch, Decode och Execute. Detta gör att en instruktion kan köras varje klockcykel.
+        Vid en hoppinstruktion måste samtliga uppdelningar tömmas innan hoppet vilket tar längre tid än om nästa instruktion hade fått exekverats.
+        De olika uppdelningarna måste tömmas och hoppa till en ny adress med instruktioner vilket som sagt påverkar prestandan och ökar tiden det tar att
+        exekvera instruktionerna.
